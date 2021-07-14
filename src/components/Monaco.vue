@@ -81,35 +81,63 @@
     <div class="tool-bar">
       <!--      <el-button type="success" icon="el-icon-check" circle size="mini" @click="getVal"></el-button>-->
 
+
       <el-button-group>
-        <!--    信息    -->
-        <el-button
-            icon="el-icon-info"
-            circle
-            @click="infoDialogVisible = true"
-        ></el-button>
-
-        <!--    获取代码    -->
-        <el-button
-            icon="el-icon-s-flag"
-            circle
-        ></el-button>
-
-        <!--    刷新代码    -->
-        <el-button
-            icon="el-icon-refresh"
-            circle
-            @click="refreshCode"
-        ></el-button>
-
-        <!--    设置    -->
-        <el-button
-            icon="el-icon-s-tools"
-            circle
-            @click="settingsDialogVisible = true"
-        ></el-button>
+        <!--    运行代码    -->
+        <el-tooltip effect="dark" content="运行代码" placement="bottom">
+          <el-button
+              icon="el-icon-video-play"
+              @click="runCode"
+          ></el-button>
+        </el-tooltip>
+        <!--    提交代码    -->
+        <el-tooltip effect="dark" content="提交代码" placement="bottom">
+          <el-button
+              icon="el-icon-upload"
+              @click="uploadCode"
+          ></el-button>
+        </el-tooltip>
+        <!--   保存代码     -->
+        <el-tooltip effect="dark" content="保存代码" placement="bottom">
+          <el-button
+              icon="el-icon-folder"
+              @click="saveCode"
+          ></el-button>
+        </el-tooltip>
       </el-button-group>
 
+      <el-button-group>
+        <!--    信息    -->
+        <el-tooltip effect="dark" content="帮助信息" placement="bottom">
+          <el-button
+              icon="el-icon-info"
+              @click="infoDialogVisible = true"
+          ></el-button>
+        </el-tooltip>
+
+        <!--    获取代码    -->
+        <el-tooltip effect="dark" content="获取代码" placement="bottom">
+          <el-button
+              icon="el-icon-s-flag"
+          ></el-button>
+        </el-tooltip>
+        <!--    刷新代码    -->
+        <el-tooltip effect="dark" content="重置代码" placement="bottom">
+          <el-button
+              icon="el-icon-refresh"
+              @click="refreshCode"
+          ></el-button>
+        </el-tooltip>
+
+        <!--    设置    -->
+        <el-tooltip effect="dark" content="设置" placement="bottom">
+          <el-button
+              icon="el-icon-s-tools"
+              @click="settingsDialogVisible = true"
+          ></el-button>
+        </el-tooltip>
+
+      </el-button-group>
 
     </div>
 
@@ -153,7 +181,7 @@ function draw() {
           useTabStops: false,
           fontSize: 15,       //字体大小
           autoIndent: true,//自动布局
-          //quickSuggestionsDelay: 500,   //代码提示延时
+          quickSuggestionsDelay: 500,   //代码提示延时
         }
       }
     }
@@ -178,15 +206,16 @@ function draw() {
       theme: 'vs',
       minimapOn: true,
       fontSize: 15,
-      codesCopy: null,//内容备份
+      codesCopy: '',//内容备份
       monacoEditor: {},
       infoDialogVisible: false,
       settingsDialogVisible: false
     }
   },
   mounted() {
+    this.codesCopy = localStorage.getItem('processing_code')
     this.initEditor();
-    // console.log(this.monacoEditor)
+
   },
   methods: {
     initEditor() {
@@ -214,6 +243,15 @@ function draw() {
     },
     refreshCode() {
       this.initEditor()
+    },
+    runCode() {
+
+    },
+    uploadCode() {
+
+    },
+    saveCode() {
+      localStorage.setItem('processing_code', this.getVal())
     }
   }
 }
@@ -234,8 +272,10 @@ function draw() {
 
 .tool-bar {
   text-align: right;
-  margin-left: 10px;
-  margin-bottom: 10px;
+}
+
+.tool-bar .el-button-group {
+  margin: 10px;
 }
 
 .el-select {

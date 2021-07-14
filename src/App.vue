@@ -2,7 +2,7 @@
   <div id="app">
     <el-container>
       <el-aside></el-aside>
-      <el-main>
+      <el-main style="overflow-y: hidden">
         <Monaco></Monaco>
       </el-main>
     </el-container>
@@ -31,6 +31,10 @@ export default {
   height: 100%;
   margin: 0;
   padding: 0;
+}
+
+.el-main {
+  height: 100%;
 }
 
 </style>
