@@ -256,6 +256,7 @@ function draw() {
   }
 }
 </script>
+
 <style scoped>
 #container {
   height: 100%;
