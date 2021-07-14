@@ -78,6 +78,41 @@
       </el-dialog>
     </div>
 
+    <div class="tool-bar">
+      <!--      <el-button type="success" icon="el-icon-check" circle size="mini" @click="getVal"></el-button>-->
+
+      <el-button-group>
+        <!--    信息    -->
+        <el-button
+            icon="el-icon-info"
+            circle
+            @click="infoDialogVisible = true"
+        ></el-button>
+
+        <!--    获取代码    -->
+        <el-button
+            icon="el-icon-s-flag"
+            circle
+        ></el-button>
+
+        <!--    刷新代码    -->
+        <el-button
+            icon="el-icon-refresh"
+            circle
+            @click="refreshCode"
+        ></el-button>
+
+        <!--    设置    -->
+        <el-button
+            icon="el-icon-s-tools"
+            circle
+            @click="settingsDialogVisible = true"
+        ></el-button>
+      </el-button-group>
+
+
+    </div>
+
     <div id="container" ref="container" style="height:700px"></div>
   </div>
 </template>
