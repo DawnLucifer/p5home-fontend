@@ -10,7 +10,7 @@
 <script>
 
 
-import Navigator from "@/components/Navigator";
+const Navigator = import("@/components/Navigator")
 
 export default {
   name: 'App',

@@ -9,7 +9,10 @@
 </template>
 
 <script>
-import Monaco from "@/components/Monaco";
+// import Monaco from "@/components/Monaco";
+
+const Monaco = import("@/components/Monaco")
+
 
 export default {
   name: "CodeEditor",

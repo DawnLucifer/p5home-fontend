@@ -1,33 +1,50 @@
 <template>
-  <div class="login" id="login">
-    <a href="javascript:" class="log-close"><i class="icons close"></i></a>
-    <div class="log-bg">
-      <div class="log-cloud cloud1"></div>
-      <div class="log-cloud cloud2"></div>
-      <div class="log-cloud cloud3"></div>
-      <div class="log-cloud cloud4"></div>
-
-      <div class="log-logo">Welcome!</div>
+  <div>
+    <div style="z-index: -1;position: absolute;width: 100%">
+      <Render type="home"></Render>
     </div>
-    <div class="log-email">
-      <input type="text" placeholder="Email" :class="'log-input' + (account===''?' log-input-empty':'')"
-             v-model="account"><input type="password" placeholder="Password"
-                                      :class="'log-input' + (password===''?' log-input-empty':'')" v-model="password">
-      <a href="javascript:" class="log-btn" @click="login">Login</a>
+    <div class="login" id="login">
+      <a href="javascript:" class="log-close"><i class="icons close"></i></a>
+      <div class="log-bg">
+        <div class="log-logo">Welcome!</div>
+      </div>
+      <div class="log-email">
+        <input type="text"
+               placeholder="用户名"
+               :class="'log-input' + (account===''?' log-input-empty':'')"
+               v-model="account">
+        <input type="password"
+               placeholder="密码"
+               :class="'log-input' + (password===''?' log-input-empty':'')"
+               v-model="password">
+        <a href="javascript:" class="log-btn" @click="login">登录</a>
+      </div>
     </div>
   </div>
+
 </template>
 
 <script>
 
+import Render from "@/pages/Render";
 export default {
   name: 'Login',
+  components: {Render},
   data() {
     return {
       isLoging: false,
       account: '',
       password: ''
     }
+  },
+
+  mounted() {
+    this.$store.commit('RECEIVE_HOME', true)
+    // console.log('enter')
+  },
+  beforeDestroy() {
+    this.$store.commit('RECEIVE_HOME', false)
+    // console.log('leave')
   },
   methods: {
     //登录逻辑
@@ -84,18 +101,13 @@ export default {
   left: 50%;
   margin-left: -250px;
   top: 50%;
-  margin-top: -350px;
+  margin-top: -250px;
   width: 500px;
-  min-height: 555px;
+  height: 400px;
   z-index: 10;
   right: 140px;
   background: #fff;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
   border-radius: 5px;
-  -webkit-box-shadow: 0 3px 16px -5px #070707;
   box-shadow: 0 3px 16px -5px #070707
 }
 
@@ -116,52 +128,17 @@ export default {
   transition: all .3s
 }
 
-.log-cloud {
-  width: 63px;
-  height: 40px;
-  position: absolute;
-  z-index: 1
-}
-
-.login .cloud1 {
-  top: 21px;
-  left: -30px;
-  transform: scale(.6);
-  animation: cloud1 20s linear infinite;
-}
-
-.login .cloud2 {
-  top: 87px;
-  right: 20px;
-  animation: cloud2 19s linear infinite;
-}
-
-.login .cloud3 {
-  top: 160px;
-  left: 5px;
-  transform: scale(.8);
-  animation: cloud3 21s linear infinite;
-}
-
-.login .cloud4 {
-  top: 150px;
-  left: -40px;
-  transform: scale(.4);
-  animation: cloud4 19s linear infinite;
-}
-
 .log-bg {
   width: 100%;
-  height: 312px;
+  height: 150px;
   overflow: hidden;
 }
 
 .log-logo {
   height: 80px;
-  margin: 120px auto 25px;
+  margin: 50px auto 25px;
   text-align: center;
-  color: #1fcab3;
-  font-weight: bold;
+  color: rgba(80, 59, 109, 0.76);
   font-size: 40px;
 }
 
@@ -206,21 +183,7 @@ export default {
   height: 50px;
   color: #fff;
   font-size: 13px;
-  -webkit-border-radius: 5px;
-  background-color: #3B5999;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
-  border-radius: 5px;
   position: relative;
-}
-
-.log-btn.tw {
-  background-color: #13B4E9
-}
-
-.log-btn.email {
-  background-color: #50E3CE
 }
 
 .log-btn:hover, .log-btn:focus {
@@ -234,16 +197,15 @@ export default {
 }
 
 .log-email .log-btn {
-  background-color: #50E3CE;
+  background-color: rgba(118, 89, 161, 0.76);
   text-align: center;
+  font-size: larger;
+  text-decoration: none;
+  letter-spacing: 15px;
 }
 
 .log-input-empty {
   border: 1px solid #f37474 !important;
-}
-
-.isloading {
-  background: #d6d6d6
 }
 
 .log-btn .icons {
@@ -267,86 +229,10 @@ export default {
   margin: 0 auto 15px;
   height: 48px;
   line-height: 48px;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
   border-radius: 5px;
 }
 
 .log-input.warn {
   border: 1px solid #f88787
-}
-
-@-webkit-keyframes cloud1 {
-  0% {
-    left: 200px
-  }
-  100% {
-    left: -130px;
-  }
-}
-
-@keyframes cloud1 {
-  0% {
-    left: 200px
-  }
-  100% {
-    left: -130px;
-  }
-}
-
-@-webkit-keyframes cloud2 {
-  0% {
-    left: 500px;
-  }
-  100% {
-    left: -90px;
-  }
-}
-
-@keyframes cloud2 {
-  0% {
-    left: 500px;
-  }
-  100% {
-    left: -90px;
-  }
-}
-
-@-webkit-keyframes cloud3 {
-  0% {
-    left: 620px;
-  }
-  100% {
-    left: -70px;
-  }
-}
-
-@keyframes cloud3 {
-  0% {
-    left: 620px;
-  }
-  100% {
-    left: -70px;
-  }
-}
-
-@-webkit-keyframes cloud4 {
-  0% {
-    left: 100px;
-  }
-  100% {
-    left: -70px;
-  }
-}
-
-@keyframes cloud4 {
-  0% {
-    left: 100px;
-  }
-  100% {
-    left: -70px;
-  }
 }
 </style>

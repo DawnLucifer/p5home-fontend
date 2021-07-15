@@ -5,7 +5,7 @@
         mode="horizontal"
         :background-color="isHome?'transparent':'#4B4B4B'"
         :text-color="isHome?'#171717':'#ffffff'"
-        :active-text-color="isHome?'#000000':'#ffd04b'"
+        :active-text-color="isHome?'#000000':'#d7e71c'"
         @select="handleSelect">
       <el-menu-item
           index="/home"
@@ -20,7 +20,7 @@
           index="/sketch"
           @click="togoSketch">草稿
       </el-menu-item>
-      <div class="user-box">
+      <div class="user-box" @click="gotoLogin">
         <span class="user-text">Admin</span>
         <el-avatar icon="el-icon-user-solid"></el-avatar>
       </div>
@@ -40,6 +40,9 @@ export default {
     },
     gotoHome() {
       this.$router.push('/home')
+    },
+    gotoLogin() {
+      this.$router.push('/login')
     }
   },
   computed: {
@@ -83,6 +86,7 @@ export default {
   margin-right: 5%;
   margin-top: 10px;
   height: 40px;
+  cursor: pointer;
 }
 
 .user-box .user-text {
