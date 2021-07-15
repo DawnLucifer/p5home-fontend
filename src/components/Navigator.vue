@@ -20,6 +20,10 @@
           index="/sketch"
           @click="togoSketch">草稿
       </el-menu-item>
+      <div class="user-box">
+        <span class="user-text">Admin</span>
+        <el-avatar icon="el-icon-user-solid"></el-avatar>
+      </div>
     </el-menu>
   </div>
 </template>
@@ -71,7 +75,29 @@ export default {
 }
 
 .nav-container {
+  position: relative;
+}
 
+.user-box {
+  float: right;
+  margin-right: 5%;
+  margin-top: 10px;
+  height: 40px;
+}
+
+.user-box .user-text {
+  display: inline-block;
+  margin-right: 10px;
+  line-height: 40px;
+  vertical-align: top;
+}
+
+.nav-container .user-box .user-text {
+  color: white;
+}
+
+.nav-container-home .user-box .user-text {
+  color: black;
 }
 
 </style>

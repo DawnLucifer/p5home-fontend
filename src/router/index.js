@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import CodeEditor from "@/pages/CodeEditor";
 import Render from "@/pages/Render";
 import Home from "@/pages/Home";
+import Login from "@/pages/Login";
 
 Vue.use(VueRouter)
 
@@ -37,6 +38,10 @@ const router = new VueRouter({
     {
       path: '/',
       component: Home
+    },
+    {
+      path: '/login',
+      component: Login
     }
   ]
 })

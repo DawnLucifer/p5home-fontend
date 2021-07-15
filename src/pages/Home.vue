@@ -8,7 +8,11 @@
         <div class="text-left">enjoy</div>
         <div class="text-right">coding</div>
         <div class="start">
-          <el-button type="danger" plain>Get Start !</el-button>
+          <el-button
+              type="danger"
+              plain
+              @click="gotoSketch"
+          >Get Start !</el-button>
         </div>
 
       </div>
@@ -29,6 +33,11 @@ export default {
   beforeDestroy() {
     this.$store.commit('RECEIVE_HOME', false)
     // console.log('leave')
+  },
+  methods: {
+    gotoSketch() {
+      this.$router.push('/sketch')
+    }
   }
 
 
