@@ -83,6 +83,13 @@
 
 
       <el-button-group>
+        <el-tooltip effect="dark" content="颜色选择器" placement="bottom">
+          <el-color-picker></el-color-picker>
+        </el-tooltip>
+      </el-button-group>
+
+
+      <el-button-group>
         <!--    运行代码    -->
         <el-tooltip effect="dark" content="运行代码" placement="bottom">
           <el-button
@@ -106,6 +113,7 @@
         </el-tooltip>
       </el-button-group>
 
+
       <el-button-group>
         <!--    信息    -->
         <el-tooltip effect="dark" content="帮助信息" placement="bottom">
@@ -126,6 +134,14 @@
           <el-button
               icon="el-icon-refresh"
               @click="refreshCode"
+          ></el-button>
+        </el-tooltip>
+
+        <!--    全屏    -->
+        <el-tooltip effect="dark" content="全屏" placement="bottom">
+          <el-button
+              icon="el-icon-full-screen"
+              @click="navChange"
           ></el-button>
         </el-tooltip>
 
@@ -174,7 +190,7 @@ function draw() {
         return {
           selectOnLineNumbers: true,
           roundedSelection: false,
-          readOnly: false,        // 只读
+          readOnly: true,        // 只读
           cursorStyle: 'line',        //光标样式
           automaticLayout: false, //自动布局
           glyphMargin: true,  //字形边缘
@@ -182,6 +198,7 @@ function draw() {
           fontSize: 15,       //字体大小
           autoIndent: true,//自动布局
           quickSuggestionsDelay: 500,   //代码提示延时
+          insertSpaces: true
         }
       }
     }
@@ -213,10 +230,13 @@ function draw() {
     }
   },
   mounted() {
-    this.codesCopy = localStorage.getItem('processing_code')
-    this.initEditor();
 
+    this.codesCopy = this.$store.state.codes || localStorage.getItem('processing_code')
+    this.theme = localStorage.getItem('theme') || this.theme
+    this.fontSize = localStorage.getItem('fontSize') || this.fontSize
+    this.initEditor();
   },
+
   methods: {
     initEditor() {
       this.$refs.container.innerHTML = '';
@@ -224,16 +244,19 @@ function draw() {
         value: this.codesCopy || this.codes,
         language: this.language,
         theme: this.theme,//vs, hc-black, or vs-dark
+        fontSize: this.fontSize,
         editorOptions: this.editorOptions,
       });
     },
     themeChange() {
       // this.codesCopy = this.getVal()
+      localStorage.setItem('theme', this.theme)
       this.monacoEditor.updateOptions({
         theme: this.theme,
       })
     },
     fontSizeChange() {
+      localStorage.setItem('fontSize', this.fontSize)
       this.monacoEditor.updateOptions({
         fontSize: this.fontSize,
       })
@@ -242,16 +265,27 @@ function draw() {
       return this.monacoEditor.getValue()
     },
     refreshCode() {
+      this.$store.commit('RECEIVE_CODES', this.getVal())
       this.initEditor()
     },
     runCode() {
-
+      this.$store.commit('RECEIVE_CODES', this.getVal())
+      this.$router.push('/render')
     },
     uploadCode() {
 
     },
     saveCode() {
+      this.$store.commit('RECEIVE_CODES', this.getVal())
       localStorage.setItem('processing_code', this.getVal())
+    },
+    navChange() {
+      this.$store.commit('RECEIVE_NAV', !this.navShow)
+    }
+  },
+  computed: {
+    navShow() {
+      return this.$store.state.navShow
     }
   }
 }
@@ -276,7 +310,7 @@ function draw() {
 }
 
 .tool-bar .el-button-group {
-  margin: 10px;
+  margin-right: 20px;
 }
 
 .el-select {
@@ -301,4 +335,6 @@ function draw() {
   width: 70%;
   padding: 20px;
 }
+
+
 </style>

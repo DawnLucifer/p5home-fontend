@@ -1,40 +1,26 @@
 <template>
   <div id="app">
-    <el-container>
-      <el-aside></el-aside>
-      <el-main style="overflow-y: hidden">
-        <Monaco></Monaco>
-      </el-main>
-    </el-container>
+    <!--    <router-link to="/sketch">to sketch</router-link>-->
+    <!--    <router-link to="/render">to render</router-link>-->
+    <Navigator></Navigator>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import Monaco from "@/components/Monaco";
 
+
+import Navigator from "@/components/Navigator";
 
 export default {
   name: 'App',
-  components: {Monaco},
+  components: {Navigator},
   data() {
-    return {
-      code: '',
-    }
-  }
+    return {}
+  },
 }
 </script>
 
 <style>
-
-#app,
-.editor {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-.el-main {
-  height: 100%;
-}
 
 </style>
