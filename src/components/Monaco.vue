@@ -208,15 +208,18 @@ function draw() {
       themeOption: [
         {
           value: 'vs',
-          label: 'vs'
+          label: 'vs',
+          type: 'light',
         },
         {
           value: 'hc-black',
-          label: 'hc-black'
+          label: 'hc-black',
+          type: 'dark',
         },
         {
           value: 'vs-dark',
-          label: 'vs-dark'
+          label: 'vs-dark',
+          type: 'dark'
         },
       ],
       fontSizeOption: [10, 11, 12, 13, 14, 15, 16, 17, 18],
@@ -288,7 +291,7 @@ function draw() {
   computed: {
     navShow() {
       return this.$store.state.navShow
-    }
+    },
   }
 }
 </script>
@@ -337,6 +340,5 @@ function draw() {
   width: 70%;
   padding: 20px;
 }
-
 
 </style>

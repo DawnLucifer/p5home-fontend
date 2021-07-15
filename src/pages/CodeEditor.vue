@@ -14,11 +14,6 @@ import Monaco from "@/components/Monaco";
 export default {
   name: "CodeEditor",
   components: {Monaco},
-  data() {
-    return {
-      asideHidden: false
-    }
-  },
 }
 </script>
 

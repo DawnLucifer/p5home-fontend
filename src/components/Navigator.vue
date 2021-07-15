@@ -1,11 +1,11 @@
 <template>
-  <div v-show="navShow">
+  <div v-show="navShow" :class="isHome?'nav-container-home':'nav-container'">
     <el-menu
         :default-active="$route.path"
         mode="horizontal"
-        background-color="#545c64"
-        text-color="#fff"
-        active-text-color="#ffd04b"
+        :background-color="isHome?'transparent':'#4B4B4B'"
+        :text-color="isHome?'#171717':'#ffffff'"
+        :active-text-color="isHome?'#000000':'#ffd04b'"
         @select="handleSelect">
       <el-menu-item
           index="/home"
@@ -42,8 +42,10 @@ export default {
     navShow() {
       return this.$store.state.navShow
     },
-  }
-
+    isHome() {
+      return this.$store.state.isHome
+    }
+  },
 }
 </script>
 
@@ -57,6 +59,19 @@ export default {
 .el-menu-item {
   padding: 0 40px;
   font-size: 16px;
+}
+
+.nav-container-home {
+  background-color: #ffffff;
+  opacity: 0.7;
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  font-weight: bold;
+}
+
+.nav-container {
+
 }
 
 </style>
