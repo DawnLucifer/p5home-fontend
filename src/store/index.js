@@ -7,7 +7,8 @@ const state = {
   codes: '',
   asideShow: true,
   navShow: true,
-  isRenderRefresh: false
+  isRenderRefresh: false,
+  isHome: false
 }
 
 const mutations = {
@@ -22,6 +23,9 @@ const mutations = {
   },
   RECEIVE_REFRESH(state, val) {
     state.isRenderRefresh = val
+  },
+  RECEIVE_HOME(state, val) {
+    state.isHome = val
   }
 }
 

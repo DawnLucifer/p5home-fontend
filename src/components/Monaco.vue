@@ -157,7 +157,7 @@
 
     </div>
 
-    <div id="container" ref="container" style="height:700px"></div>
+    <div id="container" ref="container" style="height:800px"></div>
   </div>
 </template>
 <script>
@@ -270,6 +270,7 @@ function draw() {
     },
     runCode() {
       this.$store.commit('RECEIVE_CODES', this.getVal())
+      sessionStorage.setItem('codes', this.getVal())
       this.$router.push('/render')
     },
     uploadCode() {
@@ -281,6 +282,7 @@ function draw() {
     },
     navChange() {
       this.$store.commit('RECEIVE_NAV', !this.navShow)
+      this.refreshCode()
     }
   },
   computed: {

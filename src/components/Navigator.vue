@@ -9,6 +9,7 @@
         @select="handleSelect">
       <el-menu-item
           index="/home"
+          @click="gotoHome"
       >首页
       </el-menu-item>
       <el-menu-item
@@ -33,11 +34,14 @@ export default {
     togoSketch() {
       this.$router.push('/sketch')
     },
+    gotoHome() {
+      this.$router.push('/home')
+    }
   },
   computed: {
     navShow() {
       return this.$store.state.navShow
-    }
+    },
   }
 
 }

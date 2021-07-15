@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import CodeEditor from "@/pages/CodeEditor";
 import Render from "@/pages/Render";
+import Home from "@/pages/Home";
 
 Vue.use(VueRouter)
 
@@ -28,6 +29,10 @@ const router = new VueRouter({
     {
       path: '/render',
       component: Render
+    },
+    {
+      path: '/home',
+      component: Home
     }
   ]
 })
