@@ -9,7 +9,7 @@ import 'nprogress/nprogress.css'
 const service = axios.create({
   // 配置基础路径和超时限制
   baseURL: 'http://localhost:8000/',
-  timeout: 1000,
+  timeout: 3000,
 })
 
 // 请求拦截器
@@ -17,11 +17,15 @@ const service = axios.create({
 service.interceptors.request.use(function (config) {
   // 这个 config 其实就是 请求报文
 
-
   // 这里可以添加额外的功能
   NProgress.start();  // 开始进度条
-  config.headers
+  // config.headers
 
+  if (config.url === '/user/login') {
+    return config
+  }
+
+  config.headers['token'] = localStorage.getItem('token')
 
   // 请求报文一定还要返回去 因为还要继续往下走
   return config
@@ -32,7 +36,15 @@ service.interceptors.request.use(function (config) {
 service.interceptors.response.use(function (response) {
   NProgress.done()  // 停止进度条
 
+  let token
 
+  if (response.config.url === '/user/login') {
+    token = response.data.data.token
+  } else {
+    token = response.headers['token']
+  }
+
+  localStorage.setItem('token', token)
   // 只拿我们想要的信息
   return response.data
 }, function (error) {
