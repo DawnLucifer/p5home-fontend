@@ -13,7 +13,39 @@
         </span>
       </el-dialog>
 
+      <!--   获取代码对话框   -->
+      <el-dialog
+          title="选择一个sketch"
+          :visible.sync="sketchListDialogVisible"
+          width="70%"
+      >
+        <el-table
+            :data="sketchListData"
+            highlight-current-row
+            @current-change="handleCurrentChange"
+            style="width: 100%">
+          <el-table-column
+              property="name"
+              label="名称"
+              style="width: 30%">
+          </el-table-column>
+          <el-table-column
+              property="author"
+              label="作者"
+              style="width: 30%">
+          </el-table-column>
+          <el-table-column
+              property="description"
+              label="描述"
+              style="width: 40%">
+          </el-table-column>
+        </el-table>
+        <span slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="sketchListDialogVisible = false">确 定</el-button>
+        </span>
+      </el-dialog>
 
+      <!--   设置对话框   -->
       <el-dialog
           title="设置"
           :visible.sync="settingsDialogVisible"
@@ -127,6 +159,7 @@
         <el-tooltip effect="dark" content="获取代码" placement="bottom">
           <el-button
               icon="el-icon-s-flag"
+              @click="getSketchList"
           ></el-button>
         </el-tooltip>
         <!--    刷新代码    -->
@@ -160,8 +193,10 @@
     <div id="container" ref="container" style="height:800px"></div>
   </div>
 </template>
+<!--suppress JSUnresolvedVariable -->
 <script>
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.main.js'
+import {reqSketchList} from "@/api/sketch";
 
 export default {
   props: {
@@ -229,7 +264,10 @@ function draw() {
       codesCopy: '',//内容备份
       monacoEditor: {},
       infoDialogVisible: false,
-      settingsDialogVisible: false
+      settingsDialogVisible: false,
+      sketchListDialogVisible: false,
+      currentRow: null,
+      sketchListData: []
     }
   },
   mounted() {
@@ -286,7 +324,26 @@ function draw() {
     navChange() {
       this.$store.commit('RECEIVE_NAV', !this.navShow)
       this.refreshCode()
+    },
+    handleCurrentChange(val) {
+      this.currentRow = val
+    },
+    getSketchList() {
+
+      reqSketchList().then(resp => {
+        if (resp.code === 200) {
+          this.sketchListData = resp.data
+          this.sketchListDialogVisible = true
+        } else if (resp.code === 401) {
+          this.saveCode()
+          this.$message('请先登录')
+          setTimeout(() => {
+            this.$router.push('/login')
+          }, 1000)
+        }
+      })
     }
+
   },
   computed: {
     navShow() {

@@ -74,7 +74,7 @@ export default {
         // noinspection JSUnresolvedVariable
         if (resp.code === 200) {
           const username = resp.data.user.username
-          addToken(username)
+          addToken(this, username)
           this.$router.push('/')
         }
       })

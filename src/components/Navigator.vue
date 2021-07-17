@@ -14,6 +14,7 @@
       </el-menu-item>
       <el-menu-item
           index="/circle"
+          disabled
       >社区
       </el-menu-item>
       <el-menu-item
@@ -56,7 +57,7 @@
 </template>
 
 <script>
-import {clearToken} from "@/utils/tokenManager";
+import {checkToken, clearToken, loadToken} from "@/utils/tokenManager";
 
 export default {
   name: "Navigator",
@@ -72,7 +73,7 @@ export default {
     },
     gotoLogin() {
       // console.log('click login')
-      if (this.username !== '') return
+      if (checkToken(this.username, this.expireTime)) return
       this.$router.push('/login')
     },
     handleCommand(command) {
@@ -83,7 +84,7 @@ export default {
       }
     },
     logout() {
-      clearToken()
+      clearToken(this)
     }
   },
   computed: {
@@ -96,17 +97,12 @@ export default {
     username() {
       return this.$store.state.username
     },
+    expireTime() {
+      return this.$store.state.expireTime
+    }
   },
   mounted() {
-    const expireTime = localStorage.getItem('expireTime')
-    if (expireTime === null || expireTime * 1 <= Date.now()) {
-      localStorage.removeItem('expireTime')
-      localStorage.removeItem('username')
-      return
-    }
-    const localUsername = localStorage.getItem('username')
-    if (localUsername === null) return
-    this.$store.commit('RECEIVE_USERNAME', localUsername)
+    loadToken(this)
   }
 }
 </script>

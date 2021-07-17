@@ -10,6 +10,7 @@ const state = {
   isRenderRefresh: false,
   isHome: false,
   username: '',
+  expireTime: ''
 }
 
 const mutations = {
@@ -30,6 +31,9 @@ const mutations = {
   },
   RECEIVE_USERNAME(state, val) {
     state.username = val
+  },
+  RECEIVE_EXPIRE(state, val) {
+    state.expireTime = val
   }
 }
 

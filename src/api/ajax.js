@@ -9,7 +9,7 @@ import 'nprogress/nprogress.css'
 const service = axios.create({
   // 配置基础路径和超时限制
   baseURL: 'http://localhost:8000/',
-  timeout: 3000,
+  // timeout: 3000,
 })
 
 // 请求拦截器
@@ -41,7 +41,7 @@ service.interceptors.response.use(function (response) {
   if (response.config.url === '/user/login') {
     token = response.data.data.token
   } else {
-    token = response.headers['token']
+    token = response.config.headers.token
   }
 
   localStorage.setItem('token', token)
