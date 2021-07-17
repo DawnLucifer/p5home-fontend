@@ -28,6 +28,8 @@
 
 import Render from "@/pages/Render";
 import {reqLogin} from "@/api/login";
+import vm from "@/main";
+import {addToken} from "@/utils/tokenManager";
 
 export default {
   name: 'Login',
@@ -47,6 +49,16 @@ export default {
     this.$store.commit('RECEIVE_HOME', false)
     // console.log('leave')
   },
+
+  // eslint-disable-next-line no-unused-vars
+  beforeRouteEnter(to, from, next) {
+    // console.log('enter login')
+    if (vm.$store.state.username !== '') {
+      vm.$message('您已经登陆了');
+      next(false)
+    }
+    next()
+  },
   methods: {
     //登录逻辑
     login() {
@@ -57,16 +69,12 @@ export default {
     //登录请求
     toLogin() {
       //请求后端,比如:
-      const userInfo = {
-        username: this.username,
-        password: this.password
-      }
 
-      reqLogin(userInfo).then(resp => {
-        if (resp.status === 200) {
-          let expireDays = 1000 * 60 * 60 * 24 * 3;
-          const expireTime = Date.now() + expireDays;
-          localStorage.setItem('expireTime', JSON.stringify(expireTime))
+      reqLogin(this.username, this.password).then(resp => {
+        // noinspection JSUnresolvedVariable
+        if (resp.code === 200) {
+          const username = resp.data.user.username
+          addToken(username)
           this.$router.push('/')
         }
       })

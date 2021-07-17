@@ -8,7 +8,8 @@ const state = {
   asideShow: true,
   navShow: true,
   isRenderRefresh: false,
-  isHome: false
+  isHome: false,
+  username: '',
 }
 
 const mutations = {
@@ -26,6 +27,9 @@ const mutations = {
   },
   RECEIVE_HOME(state, val) {
     state.isHome = val
+  },
+  RECEIVE_USERNAME(state, val) {
+    state.username = val
   }
 }
 

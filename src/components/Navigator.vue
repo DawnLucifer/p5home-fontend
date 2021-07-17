@@ -20,15 +20,44 @@
           index="/sketch"
           @click="togoSketch">草稿
       </el-menu-item>
-      <div class="user-box" @click="gotoLogin">
-        <span class="user-text">Admin</span>
-        <el-avatar icon="el-icon-user-solid"></el-avatar>
+      <div class="user-box">
+        <span @click="gotoLogin">
+          <span class="user-text">{{ username }}</span>
+          <el-avatar icon="el-icon-user-solid"></el-avatar>
+        </span>
+        <el-dropdown
+            @command="handleCommand">
+          <span class="el-dropdown-link">
+            <i class="el-icon-arrow-down el-icon--right"></i>
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item disabled>个人中心</el-dropdown-item>
+            <el-dropdown-item disabled>我的草稿</el-dropdown-item>
+            <el-dropdown-item
+                command="logout"
+                divided
+                v-show="username !== ''"
+            >退出登录
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </div>
+      <!--      <el-dropdown @command="handleCommand" class="avatar-pic">-->
+      <!--        <span class="el-dropdown-link">-->
+      <!--          <el-avatar shape="square" :size="40"></el-avatar>-->
+      <!--          <i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>-->
+      <!--        </span>-->
+      <!--        <el-dropdown-menu slot="dropdown">-->
+      <!--          <el-dropdown-item command="logout" class="icon-tuichu iconfont-tuichu"> 退出登录</el-dropdown-item>-->
+      <!--        </el-dropdown-menu>-->
+      <!--      </el-dropdown>-->
     </el-menu>
   </div>
 </template>
 
 <script>
+import {clearToken} from "@/utils/tokenManager";
+
 export default {
   name: "Navigator",
   methods: {
@@ -42,7 +71,19 @@ export default {
       this.$router.push('/home')
     },
     gotoLogin() {
+      // console.log('click login')
+      if (this.username !== '') return
       this.$router.push('/login')
+    },
+    handleCommand(command) {
+      switch (command) {
+        case 'logout':
+          this.logout()
+          break
+      }
+    },
+    logout() {
+      clearToken()
     }
   },
   computed: {
@@ -51,8 +92,22 @@ export default {
     },
     isHome() {
       return this.$store.state.isHome
-    }
+    },
+    username() {
+      return this.$store.state.username
+    },
   },
+  mounted() {
+    const expireTime = localStorage.getItem('expireTime')
+    if (expireTime === null || expireTime * 1 <= Date.now()) {
+      localStorage.removeItem('expireTime')
+      localStorage.removeItem('username')
+      return
+    }
+    const localUsername = localStorage.getItem('username')
+    if (localUsername === null) return
+    this.$store.commit('RECEIVE_USERNAME', localUsername)
+  }
 }
 </script>
 

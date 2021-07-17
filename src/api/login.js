@@ -1,9 +1,12 @@
 import request from './ajax'
 
-export const reqLogin = (userInfo) => {
+export const reqLogin = (username, password) => {
   return request({
     url: '/user/login',
-    method: 'get',
-    data: userInfo
+    method: 'post',
+    data: {
+      username,
+      password
+    }
   })
 }
