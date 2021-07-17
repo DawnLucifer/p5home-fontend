@@ -13,11 +13,36 @@
         </span>
       </el-dialog>
 
+      <!--   提交代码对话框   -->
+      <el-dialog
+          title="提交sketch"
+          :visible.sync="submitSketchDialogVisible"
+          width="30%">
+        <el-form
+            v-model="submitSketchForm"
+            @submit.prevent
+            label-width="100px">
+          <el-form-item label="名称" prop="name">
+            <el-input v-model="submitSketchForm.name"></el-input>
+          </el-form-item>
+          <el-form-item label="作者" prop="author">
+            <el-input v-model="submitSketchForm.author"></el-input>
+          </el-form-item>
+          <el-form-item label="描述" prop="description">
+            <el-input v-model="submitSketchForm.description"></el-input>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="confirmUploadCode">确 定</el-button>
+          </span>
+
+      </el-dialog>
+
       <!--   获取代码对话框   -->
       <el-dialog
           title="选择一个sketch"
           :visible.sync="sketchListDialogVisible"
-          width="70%"
+          width="40%"
       >
         <el-table
             :data="sketchListData"
@@ -41,7 +66,7 @@
           </el-table-column>
         </el-table>
         <span slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="sketchListDialogVisible = false">确 定</el-button>
+          <el-button type="primary" @click="confirmChangeCode">确 定</el-button>
         </span>
       </el-dialog>
 
@@ -133,7 +158,7 @@
         <el-tooltip effect="dark" content="提交代码" placement="bottom">
           <el-button
               icon="el-icon-upload"
-              @click="uploadCode"
+              @click="submitSketchDialogVisible = true"
           ></el-button>
         </el-tooltip>
         <!--   保存代码     -->
@@ -163,7 +188,7 @@
           ></el-button>
         </el-tooltip>
         <!--    刷新代码    -->
-        <el-tooltip effect="dark" content="重置代码" placement="bottom">
+        <el-tooltip effect="dark" content="刷新编辑器" placement="bottom">
           <el-button
               icon="el-icon-refresh"
               @click="refreshCode"
@@ -196,7 +221,7 @@
 <!--suppress JSUnresolvedVariable -->
 <script>
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.main.js'
-import {reqSketchList} from "@/api/sketch";
+import {postSketch, reqSketchList} from "@/api/sketch";
 
 export default {
   props: {
@@ -266,8 +291,28 @@ function draw() {
       infoDialogVisible: false,
       settingsDialogVisible: false,
       sketchListDialogVisible: false,
+      submitSketchDialogVisible: false,
+      // sketch list
       currentRow: null,
-      sketchListData: []
+      sketchListData: [],
+      submitSketchForm: {
+        name: '',
+        author: '',
+        description: '',
+      },
+      submitSketchRules: {
+        name: [{
+          required: true,
+          message: '请输入sketch名称',
+          trigger: 'blur'
+        }],
+        author: [{
+          required: true,
+          message: '请输入作者',
+          trigger: 'blur'
+        }],
+      }
+
     }
   },
   mounted() {
@@ -315,7 +360,67 @@ function draw() {
       this.$router.push('/render')
     },
     uploadCode() {
-
+      let flag = true;
+      if (this.submitSketchForm.name === '') {
+        this.$message('名称不能为空')
+        flag = false
+      }
+      if (this.submitSketchForm.author === '') {
+        this.$message('作者不能为空')
+        flag = false
+      }
+      if (this.getVal() === '') {
+        this.$message('提交的代码不能为空')
+        flag = false
+      }
+      if (!flag) return false
+      const sketch = {...this.submitSketchForm, content: this.getVal()}
+      postSketch(sketch).then(resp => {
+        if (resp.code === 200) {
+          this.$message('提交成功!')
+        } else {
+          this.$message('提交失败!')
+          flag = false
+        }
+      })
+      // this.$refs.submitSketchForm.validate((valid) => {
+      //   if (valid) {
+      //     const sketch = {...vc.submitSketchForm, content: vc.getVal()}
+      //     if (sketch.content === '') {
+      //       vc.$message('提交的代码不能为空!')
+      //       flag = false
+      //       return false
+      //     }
+      //     postSketch(sketch).then(resp => {
+      //       if (resp.code === 200) {
+      //         vc.$message('提交成功!')
+      //         vc.submitSketchForm.name = ''
+      //         vc.submitSketchForm.author = ''
+      //         vc.submitSketchForm.description = ''
+      //         flag = true
+      //         return true
+      //       } else {
+      //         vc.$message('提交失败! ' + resp.msg)
+      //         flag = false
+      //         return false
+      //       }
+      //     })
+      //   } else {
+      //     vc.$message('信息有误!')
+      //     flag = false
+      //     return false
+      //   }
+      // });
+      return flag
+    },
+    confirmUploadCode() {
+      if (this.uploadCode()) {
+        this.submitSketchForm.name = ''
+        this.submitSketchForm.author = ''
+        this.submitSketchForm.description = ''
+        this.submitSketchDialogVisible = false
+        console.log(this)
+      }
     },
     saveCode() {
       this.$store.commit('RECEIVE_CODES', this.getVal())
@@ -342,6 +447,11 @@ function draw() {
           }, 1000)
         }
       })
+    },
+    confirmChangeCode() {
+      this.sketchListDialogVisible = false
+      this.codesCopy = this.currentRow.content
+      this.initEditor()
     }
 
   },
