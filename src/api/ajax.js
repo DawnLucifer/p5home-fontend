@@ -8,10 +8,10 @@ import 'nprogress/nprogress.css'
 //  axios.create() 创建新的 axios 实例
 const service = axios.create({
   // 配置基础路径和超时限制
-  baseURL: 'http://localhost:8000/',
-  // timeout: 3000,
+  baseURL: 'http://39.103.132.14:8000/',
+  timeout: 3000,
 })
-
+// TODO
 // 请求拦截器
 
 service.interceptors.request.use(function (config) {
