@@ -1,9 +1,9 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import CodeEditor from "@/pages/CodeEditor";
-import Render from "@/pages/Render";
-import Home from "@/pages/Home";
-import Login from "@/pages/Login";
+// import CodeEditor from "@/pages/CodeEditor";
+// import Render from "@/pages/Render";
+// import Home from "@/pages/Home";
+// import Login from "@/pages/Login";
 
 Vue.use(VueRouter)
 
@@ -21,10 +21,10 @@ VueRouter.prototype.push = function (location, onResolved, onRejected) {
   else return originPush.call(this, location, onResolved, onRejected)
 }
 
-// const CodeEditor = () => import("@/pages/CodeEditor")
-// const Render = () => import("@/pages/Render")
-// const Home = () => import("@/pages/Home")
-// const Login = () => import("@/pages/Login")
+const CodeEditor = () => import("@/pages/CodeEditor")
+const Render = () => import("@/pages/Render")
+const Home = () => import("@/pages/Home")
+const Login = () => import("@/pages/Login")
 
 const router = new VueRouter({
   routes: [
