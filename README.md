@@ -1,24 +1,10 @@
-# p5home-fontend
+## 🧐 说明
 
-## Project setup
-```
-npm install
-```
+大创项目 p5home 的前端部分，基于 Vue。
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
 
-### Compiles and minifies for production
-```
-npm run build
-```
+## 😃 预览
 
-### Lints and fixes files
-```
-npm run lint
-```
+~~DEMO：[https://dawnop.com/](https://dawnop.com/)~~，现已不再运行。
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+目前已经改成个人网站。
